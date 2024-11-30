@@ -1,0 +1,151 @@
+.skill-tree {
+  margin: 1rem 0;
+}
+
+.skill-tree-invisible {
+  display: none;
+}
+
+.mat-tree-node {
+  min-height: 3rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.mat-tree-node:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.node-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.skill-name {
+  font-weight: 500;
+  cursor: help;
+}
+
+.badge {
+  font-size: 0.8rem;
+  padding: 0.4em 0.6em;
+}
+
+.prerequisites-list {
+  margin-left: 2.5rem;
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
+}
+
+/* Style pour les boutons d'action */
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-sm i {
+  font-size: 0.875rem;
+}
+
+/* Animations */
+.mat-tree-node {
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .node-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .prerequisites-list {
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Style pour les badges de niveau */
+.badge.bg-success { background-color: #28a745 !important; }
+.badge.bg-info { background-color: #17a2b8 !important; }
+.badge.bg-primary { background-color: #007bff !important; }
+.badge.bg-warning { background-color: #ffc107 !important; color: #000 !important; }
+.badge.bg-danger { background-color: #dc3545 !important; }
+.badge.bg-secondary { background-color: #6c757d !important; }
+
+/* Style pour les badges de catégorie */
+.badge.bg-primary.category { background-color: #0056b3 !important; }
+.badge.bg-success.category { background-color: #218838 !important; }
+.badge.bg-warning.category { background-color: #d39e00 !important; }
+.badge.bg-info.category { background-color: #138496 !important; }
+
+/* Style pour le loader */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: #007bff;
+}
+
+/* Style pour les messages d'erreur */
+.alert-danger {
+  margin-bottom: 1rem;
+}
+
+/* Style pour les filtres */
+.form-floating > .form-control,
+.form-floating > .form-select {
+  height: calc(3.5rem + 2px);
+  line-height: 1.25;
+}
+
+.form-floating > label {
+  padding: 1rem 0.75rem;
+}
+
+/* Style pour le bouton de réinitialisation des filtres */
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: white;
+}
+
+/* Style pour les tooltips */
+.mat-tooltip {
+  font-size: 14px !important;
+  max-width: 250px !important;
+  white-space: pre-wrap !important;
+}
+
+/* Style pour les boutons d'expansion de l'arbre */
+.mat-icon-button {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  margin-right: 8px;
+}
+
+.bi-chevron-right,
+.bi-chevron-down {
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.bi-chevron-down {
+  transform: rotate(90deg);
+}

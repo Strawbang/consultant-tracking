@@ -1,0 +1,81 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Message d'erreur -->
+            <div *ngIf="error" class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+
+            <!-- Loader -->
+            <div *ngIf="loading" class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                </div>
+            </div>
+
+            <!-- Détails de l'évaluation -->
+            <div class="card" *ngIf="!loading && evaluation">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Détails de l'Évaluation</h3>
+                    <div class="btn-group">
+                        <button class="btn btn-warning me-2" (click)="editEvaluation()">
+                            <i class="bi bi-pencil"></i> Modifier
+                        </button>
+                        <button class="btn btn-danger" (click)="deleteEvaluation()">
+                            <i class="bi bi-trash"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h5>Type d'évaluation</h5>
+                            <p>{{evaluation.type}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Statut</h5>
+                            <span class="badge" [ngClass]="getStatusClass()">
+                                {{evaluation.status}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h5>ID du consultant</h5>
+                            <p>{{evaluation.consultantId}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Date</h5>
+                            <p>{{evaluation.evaluationDate | date:'dd/MM/yyyy'}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h5>Score</h5>
+                            <p>{{evaluation.score || 'Non évalué'}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3" *ngIf="evaluation.comments">
+                        <div class="col-12">
+                            <h5>Commentaires</h5>
+                            <p class="text-muted">{{evaluation.comments}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-secondary" (click)="goBack()">
+                        <i class="bi bi-arrow-left"></i> Retour
+                    </button>
+                </div>
+            </div>
+
+            <!-- Message si l'évaluation n'est pas trouvée -->
+            <div class="alert alert-info" *ngIf="!loading && !evaluation && !error">
+                Évaluation non trouvée.
+            </div>
+        </div>
+    </div>
+</div>

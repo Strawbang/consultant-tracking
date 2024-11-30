@@ -1,0 +1,134 @@
+<div class="stats-container">
+  <mat-card class="consultant-list">
+    <mat-card-header>
+      <mat-card-title>Consultants</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-nav-list>
+        <ng-container *ngIf="consultantStats$ | async as consultants">
+          <a mat-list-item *ngFor="let stats of consultants"
+             (click)="selectConsultant(stats)"
+             [class.selected]="selectedConsultant?.consultant.id === stats.consultant.id">
+            <div class="consultant-item">
+              <div class="consultant-info">
+                <h3>{{ stats.consultant.firstName }} {{ stats.consultant.lastName }}</h3>
+                <p class="current-project" *ngIf="stats.currentProject">
+                  {{ stats.currentProject.name }}
+                </p>
+              </div>
+              <div class="performance-indicator">
+                {{ stats.averageStats.overallPerformance | number:'1.1-1' }}
+              </div>
+            </div>
+          </a>
+        </ng-container>
+      </mat-nav-list>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="stats-details" *ngIf="selectedConsultant">
+    <mat-card class="overview-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{ selectedConsultant.consultant.firstName }} {{ selectedConsultant.consultant.lastName }}
+        </mat-card-title>
+        <mat-card-subtitle *ngIf="selectedConsultant.currentProject">
+          Current Project: {{ selectedConsultant.currentProject.name }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="charts-container">
+          <div class="chart radar-chart">
+            <h3>Performance Overview</h3>
+            <canvas baseChart
+                    [type]="'radar'"
+                    [data]="getRadarChartData(selectedConsultant.averageStats)"
+                    [options]="radarChartOptions">
+            </canvas>
+          </div>
+          <div class="chart line-chart">
+            <h3>Performance History</h3>
+            <canvas baseChart
+                    [type]="'line'"
+                    [data]="getLineChartData(selectedConsultant.evaluationHistory)"
+                    [options]="lineChartOptions">
+            </canvas>
+          </div>
+        </div>
+
+        <div class="skills-progress">
+          <h3>Skill Progress</h3>
+          <mat-list>
+            <mat-list-item *ngFor="let skill of selectedConsultant.skillProgress">
+              <div class="skill-item">
+                <span class="skill-name">{{ skill.name }}</span>
+                <mat-progress-bar
+                  [mode]="'determinate'"
+                  [value]="skill.progress * 20"
+                  [color]="'primary'">
+                </mat-progress-bar>
+                <span class="skill-level">{{ skill.level }}/5</span>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+        <div class="recent-evaluations">
+          <h3>Recent Evaluations</h3>
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let evaluation of selectedConsultant.evaluations">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ evaluation.evaluationDate | date }}
+                </mat-panel-title>
+                <mat-panel-description>
+                  Overall: {{ evaluation.overallPerformance }}/5
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              
+              <div class="evaluation-details">
+                <div class="metric">
+                  <span>Technical Skills:</span>
+                  <mat-chip-list>
+                    <mat-chip>{{ evaluation.technicalSkills }}/5</mat-chip>
+                  </mat-chip-list>
+                </div>
+                <div class="metric">
+                  <span>Soft Skills:</span>
+                  <mat-chip-list>
+                    <mat-chip>{{ evaluation.softSkills }}/5</mat-chip>
+                  </mat-chip-list>
+                </div>
+                <div class="metric">
+                  <span>Project Contribution:</span>
+                  <mat-chip-list>
+                    <mat-chip>{{ evaluation.projectContribution }}/5</mat-chip>
+                  </mat-chip-list>
+                </div>
+                <div class="metric">
+                  <span>Teamwork:</span>
+                  <mat-chip-list>
+                    <mat-chip>{{ evaluation.teamwork }}/5</mat-chip>
+                  </mat-chip-list>
+                </div>
+                
+                <mat-divider></mat-divider>
+                
+                <div class="feedback">
+                  <h4>Strengths</h4>
+                  <p>{{ evaluation.strengths }}</p>
+                  
+                  <h4>Areas for Improvement</h4>
+                  <p>{{ evaluation.areasForImprovement }}</p>
+                  
+                  <h4 *ngIf="evaluation.comments">Additional Comments</h4>
+                  <p *ngIf="evaluation.comments">{{ evaluation.comments }}</p>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

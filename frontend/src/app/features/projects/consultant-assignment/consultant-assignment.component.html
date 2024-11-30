@@ -1,0 +1,94 @@
+<form [formGroup]="assignmentForm" (ngSubmit)="onSubmit()">
+  <h2 mat-dialog-title>Assign Consultant to Project</h2>
+  
+  <mat-dialog-content>
+    <div class="form-container">
+      <!-- Consultant Selection -->
+      <mat-form-field appearance="fill">
+        <mat-label>Consultant</mat-label>
+        <input type="text"
+               matInput
+               formControlName="consultantId"
+               [matAutocomplete]="auto"
+               required>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayConsultant">
+          <mat-option *ngFor="let consultant of filteredConsultants$ | async" [value]="consultant.id">
+            {{ consultant.firstName }} {{ consultant.lastName }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="assignmentForm.get('consultantId').hasError('required')">
+          Please select a consultant
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Role Selection -->
+      <mat-form-field appearance="fill">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role" required>
+          <mat-option *ngFor="let role of roles" [value]="role">
+            {{ role }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="assignmentForm.get('role').hasError('required')">
+          Please select a role
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Allocation Percentage -->
+      <mat-form-field appearance="fill">
+        <mat-label>Allocation (%)</mat-label>
+        <input matInput
+               type="number"
+               formControlName="allocation"
+               min="0"
+               max="100"
+               required>
+        <mat-error *ngIf="assignmentForm.get('allocation').hasError('required')">
+          Please enter allocation percentage
+        </mat-error>
+        <mat-error *ngIf="assignmentForm.get('allocation').hasError('min') || assignmentForm.get('allocation').hasError('max')">
+          Allocation must be between 0 and 100
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Date Range -->
+      <div class="date-range">
+        <mat-form-field appearance="fill">
+          <mat-label>Start Date</mat-label>
+          <input matInput
+                 [matDatepicker]="startPicker"
+                 formControlName="startDate"
+                 required>
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+          <mat-error *ngIf="assignmentForm.get('startDate').hasError('required')">
+            Please select a start date
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>End Date</mat-label>
+          <input matInput
+                 [matDatepicker]="endPicker"
+                 formControlName="endDate"
+                 required>
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+          <mat-error *ngIf="assignmentForm.get('endDate').hasError('required')">
+            Please select an end date
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+    <button mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!assignmentForm.valid">
+      Assign
+    </button>
+  </mat-dialog-actions>
+</form>

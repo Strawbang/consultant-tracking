@@ -1,0 +1,73 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
+
+  h3 {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.54);
+    margin-left: 8px;
+  }
+
+  .ratings-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .skill-ratings {
+    mat-list {
+      padding: 0;
+    }
+
+    .skill-rating {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 8px 0;
+
+      .skill-name {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .feedback-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    mat-form-field {
+      width: 100%;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+  }
+}
+
+mat-dialog-content {
+  max-height: none !important;
+}
+
+mat-dialog-actions {
+  padding: 16px;
+  gap: 8px;
+}

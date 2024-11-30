@@ -1,0 +1,42 @@
+.consultant-form-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+
+  mat-card {
+    mat-card-content {
+      padding: 20px;
+      
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        .full-width {
+          width: 100%;
+        }
+
+        .button-container {
+          display: flex;
+          gap: 12px;
+          justify-content: flex-end;
+          margin-top: 16px;
+        }
+      }
+    }
+  }
+}
+
+// Style pour les chips
+mat-chip-grid {
+  width: 100%;
+}
+
+input.mat-chip-input {
+  margin: 4px;
+}
+
+// Animation de chargement
+mat-progress-bar {
+  margin-top: -4px;
+}

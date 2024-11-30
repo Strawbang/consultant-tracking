@@ -1,0 +1,65 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" [opened]="true" class="app-sidenav">
+    <div class="sidenav-header">
+      <img src="assets/logo.png" alt="Logo" class="logo">
+      <h2>Consultant Tracking</h2>
+    </div>
+    
+    <mat-nav-list>
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+      <a mat-list-item routerLink="/consultants" routerLinkActive="active">
+        <mat-icon>people</mat-icon>
+        <span>Consultants</span>
+      </a>
+      <a mat-list-item routerLink="/evaluations" routerLinkActive="active">
+        <mat-icon>assessment</mat-icon>
+        <span>Evaluations</span>
+      </a>
+      <a mat-list-item routerLink="/projects" routerLinkActive="active">
+        <mat-icon>work</mat-icon>
+        <span>Projects</span>
+      </a>
+      <a mat-list-item routerLink="/skills" routerLinkActive="active">
+        <mat-icon>psychology</mat-icon>
+        <span>Skills</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar class="app-toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Consultant Tracking System</span>
+      <span class="toolbar-spacer"></span>
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <div class="content-wrapper">
+      <div class="content-container">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

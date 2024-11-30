@@ -1,0 +1,135 @@
+<div class="container-fluid p-4">
+  <mat-card>
+    <mat-card-header class="d-flex justify-content-between align-items-center mb-4">
+      <mat-card-title>Liste des Évaluations</mat-card-title>
+      <button mat-raised-button color="primary" (click)="createEvaluation()">
+        <mat-icon>add</mat-icon>
+        Nouvelle Évaluation
+      </button>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Filtres -->
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Type d'évaluation</mat-label>
+            <mat-select [(ngModel)]="selectedType" (selectionChange)="applyFilter()">
+              <mat-option [value]="null">Tous les types</mat-option>
+              <mat-option *ngFor="let type of evaluationTypes" [value]="type">
+                {{type}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Date de début</mat-label>
+            <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" (dateChange)="applyFilter()">
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Date de fin</mat-label>
+            <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" (dateChange)="applyFilter()">
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Message d'erreur -->
+      <div *ngIf="error" class="alert alert-danger" role="alert">
+        {{error}}
+      </div>
+
+      <!-- Loader -->
+      <div *ngIf="isLoading" class="d-flex justify-content-center my-4">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <!-- Table des évaluations -->
+      <div class="mat-elevation-z8" *ngIf="!isLoading">
+        <table mat-table [dataSource]="dataSource" matSort class="w-100">
+          
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <td mat-cell *matCellDef="let evaluation"> {{evaluation.id}} </td>
+          </ng-container>
+
+          <!-- Type Column -->
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+            <td mat-cell *matCellDef="let evaluation"> {{evaluation.type}} </td>
+          </ng-container>
+
+          <!-- Consultant Column -->
+          <ng-container matColumnDef="consultantName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Consultant </th>
+            <td mat-cell *matCellDef="let evaluation"> {{getConsultantName(evaluation.consultantId)}} </td>
+          </ng-container>
+
+          <!-- Date Column -->
+          <ng-container matColumnDef="evaluationDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+            <td mat-cell *matCellDef="let evaluation"> {{evaluation.evaluationDate | date:'dd/MM/yyyy'}} </td>
+          </ng-container>
+
+          <!-- Score Column -->
+          <ng-container matColumnDef="score">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Score </th>
+            <td mat-cell *matCellDef="let evaluation">
+              <span [class.text-success]="evaluation.score >= 4"
+                    [class.text-warning]="evaluation.score >= 2.5 && evaluation.score < 4"
+                    [class.text-danger]="evaluation.score < 2.5">
+                {{evaluation.score || 'N/A'}}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Statut </th>
+            <td mat-cell *matCellDef="let evaluation">
+              <mat-chip [color]="getStatusColor(evaluation.status)" selected>
+                {{evaluation.status}}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let evaluation">
+              <button mat-icon-button color="primary" (click)="viewEvaluation(evaluation.id)" matTooltip="Voir les détails">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" (click)="editEvaluation(evaluation.id)" matTooltip="Modifier">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="onDeleteEvaluation(evaluation.id)" matTooltip="Supprimer">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+                      showFirstLastButtons
+                      aria-label="Sélectionner la page">
+        </mat-paginator>
+      </div>
+
+      <!-- Message si aucune évaluation -->
+      <div *ngIf="!isLoading && dataSource.data.length === 0" class="alert alert-info mt-3">
+        Aucune évaluation trouvée.
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

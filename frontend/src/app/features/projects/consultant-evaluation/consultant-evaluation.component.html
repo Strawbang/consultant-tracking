@@ -1,0 +1,172 @@
+<form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()">
+  <h2 mat-dialog-title>
+    Consultant Evaluation - {{ data.consultantName }}
+    <span class="subtitle" *ngIf="existingEvaluation$ | async">
+      (Last evaluated: {{ (existingEvaluation$ | async)?.evaluationDate | date }})
+    </span>
+  </h2>
+  
+  <mat-dialog-content>
+    <div class="form-container">
+      <!-- Performance Ratings -->
+      <div class="ratings-section">
+        <h3>Performance Ratings</h3>
+        
+        <!-- Overall Performance -->
+        <mat-form-field appearance="fill">
+          <mat-label>Overall Performance</mat-label>
+          <mat-select formControlName="overallPerformance" required>
+            <mat-option *ngFor="let rating of performanceRatings" [value]="rating.value">
+              {{ rating.value }} - {{ rating.label }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="evaluationForm.get('overallPerformance').hasError('required')">
+            Please rate the overall performance
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Technical Skills -->
+        <mat-form-field appearance="fill">
+          <mat-label>Technical Skills</mat-label>
+          <mat-select formControlName="technicalSkills" required>
+            <mat-option *ngFor="let rating of performanceRatings" [value]="rating.value">
+              {{ rating.value }} - {{ rating.label }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="evaluationForm.get('technicalSkills').hasError('required')">
+            Please rate the technical skills
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Soft Skills -->
+        <mat-form-field appearance="fill">
+          <mat-label>Soft Skills</mat-label>
+          <mat-select formControlName="softSkills" required>
+            <mat-option *ngFor="let rating of performanceRatings" [value]="rating.value">
+              {{ rating.value }} - {{ rating.label }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="evaluationForm.get('softSkills').hasError('required')">
+            Please rate the soft skills
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Project Contribution -->
+        <mat-form-field appearance="fill">
+          <mat-label>Project Contribution</mat-label>
+          <mat-select formControlName="projectContribution" required>
+            <mat-option *ngFor="let rating of performanceRatings" [value]="rating.value">
+              {{ rating.value }} - {{ rating.label }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="evaluationForm.get('projectContribution').hasError('required')">
+            Please rate the project contribution
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Teamwork -->
+        <mat-form-field appearance="fill">
+          <mat-label>Teamwork</mat-label>
+          <mat-select formControlName="teamwork" required>
+            <mat-option *ngFor="let rating of performanceRatings" [value]="rating.value">
+              {{ rating.value }} - {{ rating.label }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="evaluationForm.get('teamwork').hasError('required')">
+            Please rate the teamwork
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Skill Ratings -->
+      <div class="skill-ratings" *ngIf="skillRatings$ | async as skillRatings">
+        <h3>Skill Proficiency</h3>
+        <mat-list>
+          <mat-list-item *ngFor="let rating of skillRatings">
+            <div class="skill-rating">
+              <span class="skill-name">{{ rating.skill.name }}</span>
+              <mat-chip-list>
+                <mat-chip [color]="'primary'" selected>
+                  Level {{ rating.proficiencyLevel }}
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <!-- Feedback Section -->
+      <div class="feedback-section">
+        <h3>Detailed Feedback</h3>
+
+        <!-- Strengths -->
+        <mat-form-field appearance="fill">
+          <mat-label>Key Strengths</mat-label>
+          <textarea matInput
+                    formControlName="strengths"
+                    rows="3"
+                    required
+                    placeholder="List the consultant's key strengths and achievements..."></textarea>
+          <mat-error *ngIf="evaluationForm.get('strengths').hasError('required')">
+            Please provide key strengths
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Areas for Improvement -->
+        <mat-form-field appearance="fill">
+          <mat-label>Areas for Improvement</mat-label>
+          <textarea matInput
+                    formControlName="areasForImprovement"
+                    rows="3"
+                    required
+                    placeholder="List areas where the consultant can improve..."></textarea>
+          <mat-error *ngIf="evaluationForm.get('areasForImprovement').hasError('required')">
+            Please provide areas for improvement
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Additional Comments -->
+        <mat-form-field appearance="fill">
+          <mat-label>Additional Comments</mat-label>
+          <textarea matInput
+                    formControlName="comments"
+                    rows="3"
+                    placeholder="Any additional comments or observations..."></textarea>
+        </mat-form-field>
+
+        <!-- Next Steps -->
+        <mat-form-field appearance="fill">
+          <mat-label>Next Steps</mat-label>
+          <textarea matInput
+                    formControlName="nextSteps"
+                    rows="3"
+                    placeholder="Recommended next steps for development..."></textarea>
+        </mat-form-field>
+
+        <!-- Evaluation Date -->
+        <mat-form-field appearance="fill">
+          <mat-label>Evaluation Date</mat-label>
+          <input matInput
+                 [matDatepicker]="picker"
+                 formControlName="evaluationDate"
+                 required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="evaluationForm.get('evaluationDate').hasError('required')">
+            Please select an evaluation date
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+    <button mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!evaluationForm.valid">
+      Save Evaluation
+    </button>
+  </mat-dialog-actions>
+</form>

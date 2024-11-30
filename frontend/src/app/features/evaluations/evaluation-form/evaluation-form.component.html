@@ -1,0 +1,102 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3>{{isEditMode ? 'Modifier' : 'Nouvelle'}} Évaluation</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Message d'erreur -->
+                    <div *ngIf="error" class="alert alert-danger" role="alert">
+                        {{error}}
+                    </div>
+
+                    <!-- Loader -->
+                    <div *ngIf="isLoading" class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Chargement...</span>
+                        </div>
+                    </div>
+
+                    <!-- Formulaire -->
+                    <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+                        <!-- Type d'évaluation -->
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Type d'évaluation *</label>
+                            <select id="type" class="form-select" formControlName="type"
+                                [ngClass]="{ 'is-invalid': submitted && f['type'].errors }">
+                                <option value="">Sélectionnez un type</option>
+                                <option *ngFor="let type of evaluationTypes" [value]="type">
+                                    {{type}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f['type'].errors" class="invalid-feedback">
+                                <div *ngIf="f['type'].errors['required']">Le type d'évaluation est requis</div>
+                            </div>
+                        </div>
+
+                        <!-- ID du consultant -->
+                        <div class="mb-3">
+                            <label for="consultantId" class="form-label">ID du consultant *</label>
+                            <input type="number" id="consultantId" class="form-control" formControlName="consultantId"
+                                [ngClass]="{ 'is-invalid': submitted && f['consultantId'].errors }">
+                            <div *ngIf="submitted && f['consultantId'].errors" class="invalid-feedback">
+                                <div *ngIf="f['consultantId'].errors['required']">L'ID du consultant est requis</div>
+                            </div>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date *</label>
+                            <input type="date" id="date" class="form-control" formControlName="date"
+                                [ngClass]="{ 'is-invalid': submitted && f['date'].errors }">
+                            <div *ngIf="submitted && f['date'].errors" class="invalid-feedback">
+                                <div *ngIf="f['date'].errors['required']">La date est requise</div>
+                            </div>
+                        </div>
+
+                        <!-- Score -->
+                        <div class="mb-3">
+                            <label for="score" class="form-label">Score</label>
+                            <input type="number" id="score" class="form-control" formControlName="score"
+                                [ngClass]="{ 'is-invalid': submitted && f['score'].errors }">
+                            <div *ngIf="submitted && f['score'].errors" class="invalid-feedback">
+                                <div *ngIf="f['score'].errors['min']">Le score minimum est 0</div>
+                                <div *ngIf="f['score'].errors['max']">Le score maximum est 100</div>
+                            </div>
+                        </div>
+
+                        <!-- Commentaires -->
+                        <div class="mb-3">
+                            <label for="comments" class="form-label">Commentaires</label>
+                            <textarea id="comments" class="form-control" formControlName="comments" rows="3"></textarea>
+                        </div>
+
+                        <!-- Statut -->
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Statut *</label>
+                            <select id="status" class="form-select" formControlName="status"
+                                [ngClass]="{ 'is-invalid': submitted && f['status'].errors }">
+                                <option value="SCHEDULED">Planifiée</option>
+                                <option value="COMPLETED">Terminée</option>
+                                <option value="CANCELLED">Annulée</option>
+                            </select>
+                            <div *ngIf="submitted && f['status'].errors" class="invalid-feedback">
+                                <div *ngIf="f['status'].errors['required']">Le statut est requis</div>
+                            </div>
+                        </div>
+
+                        <!-- Boutons -->
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-secondary" (click)="onCancel()">Annuler</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                                {{isEditMode ? 'Modifier' : 'Créer'}}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

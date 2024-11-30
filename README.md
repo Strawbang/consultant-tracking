@@ -1,81 +1,163 @@
-# Turborepo starter
+# Consultant Tracking Application
 
-This is an official starter Turborepo.
+Application de suivi et de gestion des compétences des consultants développée avec Angular 18 et Spring Boot.
 
-## Using this example
+## 🚀 Fonctionnalités
 
-Run the following command:
+- Gestion des compétences
+  - Liste des compétences avec filtrage avancé
+  - Catégorisation des compétences (Technique, Soft Skills, Projet, Management)
+  - Niveaux de compétence (1-5)
+  - Vue arborescente des compétences
 
-```sh
-npx create-turbo@latest
+- Évaluations
+  - Suivi des évaluations des consultants
+  - Historique des évaluations
+  - Filtrage par type et date
+
+## 🛠️ Technologies
+
+### Frontend
+- Angular 18
+- Angular Material
+- RxJS
+- SCSS
+- TypeScript
+
+### Backend
+- Spring Boot
+- Spring Security
+- Spring Data JPA
+- MariaDB
+- Liquibase
+
+## 📋 Prérequis
+
+- Node.js (v18+)
+- npm ou yarn
+- Java 17+
+- MariaDB
+
+## 🔧 Installation
+
+### Base de données
+```bash
+# Créer la base de données
+mysql -u root -p
+CREATE DATABASE consultant_tracking;
+
+# Les migrations Liquibase s'exécuteront automatiquement au démarrage de l'application
 ```
 
-## What's inside?
+### Backend
+```bash
+# Se placer dans le dossier backend
+cd backend
 
-This Turborepo includes the following packages/apps:
+# Compiler le projet
+./mvnw clean install
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+# Lancer l'application
+./mvnw spring-boot:run
 ```
 
-### Develop
+### Frontend
+```bash
+# Se placer dans le dossier frontend
+cd frontend
 
-To develop all apps and packages, run the following command:
+# Installer les dépendances
+npm install
 
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+# Lancer l'application en mode développement
+npm start
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+L'application sera accessible à l'adresse : `http://localhost:4200`
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## 📁 Structure du Projet
 
 ```
-npx turbo link
+consultant-tracking/
+├── frontend/                # Application Angular
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── core/       # Services, modèles, guards
+│   │   │   ├── features/   # Modules fonctionnels
+│   │   │   └── shared/     # Composants partagés
+│   │   ├── assets/         # Images, fonts, etc.
+│   │   └── styles/         # Styles globaux
+│   └── package.json
+├── backend/                 # Application Spring Boot
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/      # Code source Java
+│   │   │   └── resources/ # Configuration
+│   │   └── test/          # Tests
+│   └── pom.xml
+└── liquibase/              # Scripts de migration DB
 ```
 
-## Useful Links
+## 🔐 Configuration
 
-Learn more about the power of Turborepo:
+### Backend
+Configurer les propriétés dans `backend/src/main/resources/application.properties` :
+```properties
+spring.datasource.url=jdbc:mariadb://localhost:3306/consultant_tracking
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+```
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+### Frontend
+Les variables d'environnement sont dans `frontend/src/environments/` :
+- `environment.ts` pour le développement
+- `environment.prod.ts` pour la production
+
+## 🧪 Tests
+
+### Backend
+```bash
+./mvnw test
+```
+
+### Frontend
+```bash
+npm test
+```
+
+## 📦 Déploiement
+
+### Production Build
+```bash
+# Backend
+./mvnw clean package
+
+# Frontend
+npm run build
+```
+
+Les fichiers de production seront générés dans :
+- Backend : `target/consultant-tracking.jar`
+- Frontend : `dist/consultant-tracking/`
+
+## 🤝 Contribution
+
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/amazing-feature`)
+3. Commit les changements (`git commit -m 'Add amazing feature'`)
+4. Push la branche (`git push origin feature/amazing-feature`)
+5. Ouvrir une Pull Request
+
+## 📝 License
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## 👥 Auteurs
+
+- Strawbang - *Développement initial*
+
+## 🙏 Remerciements
+
+- Angular Material pour les composants UI
+- Spring Boot pour le framework backend
+- La communauté open source

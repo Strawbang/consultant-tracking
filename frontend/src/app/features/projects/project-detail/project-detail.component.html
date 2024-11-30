@@ -1,0 +1,121 @@
+<div class="container" *ngIf="project$ | async as project">
+  <div class="header">
+    <div class="title">
+      <h1>{{ project.name }}</h1>
+      <mat-chip [color]="getStatusColor(project.status)" selected>
+        {{ project.status }}
+      </mat-chip>
+    </div>
+    <button mat-raised-button color="primary" (click)="editProject(project)">
+      <mat-icon>edit</mat-icon>
+      Edit Project
+    </button>
+  </div>
+
+  <div class="content">
+    <!-- Project Details -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Project Details</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="label">Client:</span>
+            <span class="value">{{ project.client }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Start Date:</span>
+            <span class="value">{{ project.startDate | date }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">End Date:</span>
+            <span class="value">{{ project.endDate | date }}</span>
+          </div>
+          <div class="detail-item full-width">
+            <span class="label">Description:</span>
+            <span class="value">{{ project.description }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Required Skills -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Required Skills</mat-card-title>
+        <button mat-icon-button color="primary" (click)="addSkill()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <ng-container *ngIf="skills$ | async as skills">
+            <mat-list-item *ngFor="let skill of skills">
+              <div class="skill-item">
+                <span>{{ skill.skill?.name }}</span>
+                <div class="skill-details">
+                  <mat-chip [color]="'primary'" selected>
+                    Level {{ skill.requiredLevel }}
+                  </mat-chip>
+                  <mat-chip [color]="'accent'" selected>
+                    {{ skill.priority }}
+                  </mat-chip>
+                  <button mat-icon-button color="warn" (click)="removeSkill(skill.skillId)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-list-item>
+          </ng-container>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Assigned Consultants -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Assigned Consultants</mat-card-title>
+        <button mat-icon-button color="primary" (click)="addConsultant()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <ng-container *ngIf="consultants$ | async as consultants">
+            <mat-list-item *ngFor="let assignment of consultants">
+              <div class="consultant-item">
+                <div class="consultant-info">
+                  <span class="name">
+                    {{ assignment.consultant?.firstName }} {{ assignment.consultant?.lastName }}
+                  </span>
+                  <span class="role">{{ assignment.role }}</span>
+                </div>
+                <div class="consultant-details">
+                  <mat-chip selected>
+                    {{ assignment.allocation }}%
+                  </mat-chip>
+                  <span class="dates">
+                    {{ assignment.startDate | date }} - {{ assignment.endDate | date }}
+                  </span>
+                  <button mat-icon-button
+                          color="primary"
+                          (click)="evaluateConsultant(assignment)"
+                          matTooltip="Evaluate consultant">
+                    <mat-icon>rate_review</mat-icon>
+                  </button>
+                  <button mat-icon-button
+                          color="warn"
+                          (click)="removeConsultant(assignment.consultantId)"
+                          matTooltip="Remove consultant">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-list-item>
+          </ng-container>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+.consultant-list-container {
+  padding: 20px;
+
+  mat-card {
+    mat-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+
+      mat-card-title {
+        margin: 0;
+      }
+
+      button {
+        margin-left: auto;
+      }
+    }
+
+    mat-card-content {
+      mat-form-field {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .table-container {
+        position: relative;
+        min-height: 200px;
+        overflow: auto;
+        overflow-x: auto;
+
+        table {
+          width: 100%;
+
+          .mat-column-actions {
+            width: 120px;
+            text-align: right;
+          }
+
+          .mat-column-rating {
+            width: 150px;
+            
+            mat-progress-bar {
+              margin-top: 8px;
+            }
+
+            .rating-value {
+              display: block;
+              text-align: center;
+              font-size: 12px;
+              margin-top: 4px;
+            }
+          }
+
+          .mat-column-skills {
+            min-width: 200px;
+            
+            mat-chip-list {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 4px;
+            }
+          }
+
+          td.mat-cell {
+            padding: 16px 8px;
+
+            mat-chip-grid {
+              display: inline-flex;
+              flex-wrap: wrap;
+              gap: 4px;
+            }
+          }
+        }
+
+        .loading-shade {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          background: rgba(0, 0, 0, 0.15);
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
