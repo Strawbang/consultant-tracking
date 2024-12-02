@@ -1,0 +1,122 @@
+// Styles globaux
+
+// Reset et styles de base
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+// Typographie
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--primary-darker);
+    text-decoration: underline;
+  }
+}
+
+// Layout
+.container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section {
+  margin: 2rem 0;
+  padding: 1rem;
+  background-color: var(--surface-color);
+  border-radius: 4px;
+  box-shadow: var(--shadow-1);
+}
+
+// Grille
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+// Utilitaires
+.text-primary { color: var(--primary-color); }
+.text-secondary { color: var(--secondary-color); }
+.text-success { color: var(--success-color); }
+.text-error { color: var(--error-color); }
+.text-warning { color: var(--warning-color); }
+.text-info { color: var(--info-color); }
+
+.bg-primary { background-color: var(--primary-color); color: white; }
+.bg-secondary { background-color: var(--secondary-color); color: white; }
+.bg-success { background-color: var(--success-color); color: white; }
+.bg-error { background-color: var(--error-color); color: white; }
+.bg-warning { background-color: var(--warning-color); color: white; }
+.bg-info { background-color: var(--info-color); color: white; }
+
+// Espacements
+.m-1 { margin: 0.25rem; }
+.m-2 { margin: 0.5rem; }
+.m-3 { margin: 1rem; }
+.m-4 { margin: 1.5rem; }
+.m-5 { margin: 3rem; }
+
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 1rem; }
+.p-4 { padding: 1.5rem; }
+.p-5 { padding: 3rem; }
+
+// Flexbox
+.d-flex { display: flex; }
+.flex-column { flex-direction: column; }
+.justify-content-between { justify-content: space-between; }
+.align-items-center { align-items: center; }
+.flex-wrap { flex-wrap: wrap; }
+
+// États
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.selected {
+  background-color: var(--selected-overlay);
+}
+
+// Animations
+.fade {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.scale {
+  transition: transform 0.3s ease-in-out;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

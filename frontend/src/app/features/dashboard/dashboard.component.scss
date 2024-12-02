@@ -1,39 +1,216 @@
 .dashboard-container {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+  padding: 24px;
+  
+  @media (max-width: 600px) {
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+// Metrics Grid
+mat-grid-list {
+  margin-bottom: 32px;
+  
+  @media (max-width: 600px) {
+    margin-bottom: 16px;
+  }
 }
 
 .metric-card {
   width: 100%;
   height: 100%;
-  text-align: center;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 8px;
+    text-align: center;
+    
+    @media (max-width: 600px) {
+      padding: 12px;
+    }
+  }
   
   .metric-value {
-    font-size: 24px;
-    font-weight: bold;
-    color: #1976d2;
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+    line-height: 1.2;
+    
+    @media (max-width: 960px) {
+      font-size: 28px;
+    }
+    
+    @media (max-width: 600px) {
+      font-size: 24px;
+    }
   }
   
   .metric-label {
-    font-size: 14px;
-    color: #666;
+    font-size: clamp(12px, 2vw, 14px);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    
+    @media (max-width: 600px) {
+      font-size: 13px;
+    }
   }
 }
 
+// Charts Container
 .charts-container {
-  margin-top: 20px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 24px;
+  margin-top: 24px;
   
-  .chart-card {
-    min-height: 400px;
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr));
+}
+
+.chart-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  
+  width: 100%;
+  box-sizing: border-box;
+  
+  mat-card-header {
+    padding: 16px 24px;
+    background-color: #fafafa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     
-    &:last-child {
-      grid-column: span 2;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    
+    mat-card-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin: 0;
+      
+      @media (max-width: 600px) {
+        font-size: 16px;
+      }
+      
+      font-size: clamp(16px, 2.5vw, 18px);
+      margin: 0;
+    }
+  }
+  
+  mat-card-content {
+    padding: 24px;
+    height: 400px;
+    
+    @media (max-width: 960px) {
+      height: 350px;
     }
     
-    mat-card-content {
-      height: 350px;
+    @media (max-width: 600px) {
+      height: 300px;
+      padding: 16px;
+    }
+    
+    padding: 16px;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    
+    @media (max-width: 576px) {
+      min-height: 250px;
+    }
+  }
+  
+  &:last-child {
+    @media (min-width: 961px) {
+      grid-column: span 2;
+      
+      mat-card-content {
+        height: 300px;
+      }
+    }
+  }
+}
+
+// Charts Responsiveness
+::ng-deep {
+  .ngx-charts {
+    width: 100% !important;
+    height: 100% !important;
+    
+    .pie-chart {
+      .pie-label {
+        font-size: 12px;
+      }
+    }
+    
+    .chart-legend {
+      .legend-labels {
+        background-color: transparent !important;
+      }
+    }
+    
+    width: 100% !important;
+    height: 100% !important;
+    
+    .pie-chart, .bar-chart, .line-chart {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    
+    .chart-legend {
+      .legend-labels {
+        max-height: none !important;
+        overflow-y: visible !important;
+        
+        .legend-label {
+          margin: 4px !important;
+          
+          .legend-label-text {
+            font-size: clamp(11px, 1.5vw, 12px) !important;
+          }
+        }
+      }
+    }
+    
+    .grid-line-path {
+      stroke-width: 0.5 !important;
+    }
+    
+    .tick {
+      font-size: clamp(10px, 1.5vw, 12px) !important;
     }
   }
 }

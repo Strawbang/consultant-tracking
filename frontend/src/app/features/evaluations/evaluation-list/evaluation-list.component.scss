@@ -1,43 +1,180 @@
 :host {
   display: block;
-  margin: 1rem;
+  padding: clamp(8px, 2vw, 24px);
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .mat-mdc-card {
-  margin-bottom: 2rem;
+  margin-bottom: clamp(16px, 3vw, 24px);
+
+  .mat-mdc-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: clamp(16px, 3vw, 24px);
+    flex-wrap: wrap;
+    gap: 12px;
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .mat-mdc-card-title {
+      margin: 0;
+      font-size: clamp(18px, 2.5vw, 24px);
+    }
+
+    button {
+      margin: 0;
+      width: auto;
+
+      @media (max-width: 600px) {
+        width: 100%;
+      }
+    }
+  }
+
+  .mat-mdc-card-content {
+    .row {
+      margin-bottom: clamp(16px, 3vw, 24px);
+
+      @media (max-width: 768px) {
+        .col-md-4 {
+          margin-bottom: 16px;
+        }
+      }
+    }
+
+    .alert {
+      margin-bottom: clamp(16px, 3vw, 24px);
+      padding: clamp(12px, 2vw, 16px);
+      font-size: clamp(14px, 1.5vw, 16px);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin: 0 -16px;
+      padding: 0 16px;
+
+      @media (max-width: 600px) {
+        margin: 0 -8px;
+        padding: 0 8px;
+      }
+
+      table {
+        width: 100%;
+        min-width: 800px;
+
+        th.mat-header-cell,
+        td.mat-cell {
+          padding: clamp(8px, 1.5vw, 16px);
+          font-size: clamp(14px, 1.5vw, 16px);
+
+          &:not(.mat-column-actions) {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+          }
+        }
+
+        .mat-column-id {
+          width: 80px;
+          @media (max-width: 960px) {
+            width: 60px;
+          }
+        }
+
+        .mat-column-type {
+          width: 120px;
+          @media (max-width: 960px) {
+            width: 100px;
+          }
+        }
+
+        .mat-column-score {
+          width: 100px;
+          text-align: center;
+          @media (max-width: 960px) {
+            width: 80px;
+          }
+        }
+
+        .mat-column-status {
+          width: 120px;
+          @media (max-width: 960px) {
+            width: 110px;
+          }
+
+          mat-chip {
+            font-size: clamp(11px, 1.2vw, 12px);
+            height: auto;
+            padding: clamp(4px, 1vw, 8px) clamp(8px, 2vw, 12px);
+          }
+        }
+
+        .mat-column-actions {
+          width: 100px;
+          text-align: center;
+
+          @media (max-width: 960px) {
+            width: 90px;
+          }
+
+          button {
+            @media (max-width: 600px) {
+              padding: 0 8px;
+              min-width: 32px;
+
+              mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                line-height: 18px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-.mat-column-actions {
-  width: 120px;
-  text-align: center;
+// Style pour le paginateur sur mobile
+::ng-deep .mat-mdc-paginator {
+  @media (max-width: 600px) {
+    .mat-mdc-paginator-container {
+      justify-content: center;
+      padding: 0 8px;
+
+      .mat-mdc-paginator-range-label {
+        margin: 0 8px;
+        font-size: clamp(12px, 1.2vw, 14px);
+      }
+
+      .mat-mdc-paginator-page-size {
+        margin-right: 8px;
+      }
+    }
+  }
 }
 
-.mat-column-status {
-  width: 120px;
-}
-
-.mat-column-id {
-  width: 80px;
-}
-
-.mat-column-score {
-  width: 100px;
-}
-
+// Styles pour les indicateurs de score
 .text-success {
   color: #28a745;
+  font-weight: 500;
 }
 
 .text-warning {
   color: #ffc107;
+  font-weight: 500;
 }
 
 .text-danger {
   color: #dc3545;
-}
-
-table {
-  width: 100%;
+  font-weight: 500;
 }
 
 .mat-mdc-row {
@@ -55,15 +192,16 @@ table {
   color: rgba(0, 0, 0, 0.87);
 }
 
-.mat-mdc-paginator {
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-}
-
 .mat-mdc-form-field {
   width: 100%;
+  margin-bottom: clamp(12px, 2vw, 20px);
 }
 
 .mat-mdc-chip {
   min-height: 24px;
-  font-size: 12px;
+  font-size: clamp(11px, 1.2vw, 12px);
+
+  @media (max-width: 600px) {
+    margin: 2px;
+  }
 }

@@ -1,0 +1,68 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+// Inclusion des styles de base de Material
+@include mat.core();
+
+// Configuration du thème Material Design 3
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$blue-palette,
+    tertiary: mat.$green-palette,
+    use-system-variables: true
+  )
+));
+
+// Application du thème M3
+.mat-theme {
+  @include mat.all-component-themes($theme);
+}
+
+// Variables CSS personnalisées
+:root {
+  // Couleurs Primaires
+  --primary-color: #1A237E;  // Bleu profond
+  --primary-lighter: #3949AB;  // Bleu indigo clair
+  --primary-darker: #0D47A1;  // Bleu indigo foncé
+  
+  // Couleurs Secondaires
+  --secondary-color: #00796B;  // Vert-bleu (teal)
+  --secondary-lighter: #26A69A;  // Vert-bleu clair
+  --secondary-darker: #004D40;  // Vert-bleu foncé
+  
+  // Couleurs d'Accent
+  --accent-color: #FF6F00;  // Orange vif
+  --accent-lighter: #FFA726;  // Orange clair
+  
+  // Couleurs d'Alerte
+  --error-color: #D32F2F;  // Rouge error
+  --warning-color: #FFA000;  // Orange warning
+  --success-color: #388E3C;  // Vert succès
+  --info-color: #0288D1;    // Bleu info
+  
+  // Couleurs de Fond
+  --background-color: #FAFBFC;  // Gris très clair
+  --surface-color: #FFFFFF;    // Blanc
+  --card-color: #FFFFFF;       // Blanc
+  --hover-color: #F5F7FA;     // Gris hover
+  
+  // Couleurs de Texte
+  --text-primary: #2C3E50;    // Gris foncé
+  --text-secondary: #546E7A;  // Gris moyen
+  --text-disabled: #90A4AE;   // Gris clair
+  
+  // Couleurs de Bordure
+  --border-color: #E0E4E8;    // Gris bordure
+  --divider-color: #ECEFF1;   // Gris séparateur
+  
+  // Ombres
+  --shadow-1: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-2: 0 4px 8px rgba(0,0,0,0.08);
+  --shadow-3: 0 8px 16px rgba(0,0,0,0.12);
+  
+  // États
+  --hover-overlay: rgba(0,0,0,0.04);
+  --selected-overlay: rgba(26,35,126,0.08);  // Basé sur primary-color
+  --disabled-background: #F5F5F5;
+}

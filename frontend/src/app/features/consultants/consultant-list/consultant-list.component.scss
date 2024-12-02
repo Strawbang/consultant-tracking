@@ -1,40 +1,57 @@
 .consultant-list-container {
-  padding: 20px;
+  padding: clamp(8px, 2vw, 20px);
+  width: 100%;
+  box-sizing: border-box;
 
   mat-card {
     mat-card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: clamp(12px, 2vw, 20px);
+      flex-wrap: wrap;
+      gap: 12px;
+
+      @media (max-width: 600px) {
+        flex-direction: column;
+        align-items: stretch;
+      }
 
       mat-card-title {
         margin: 0;
+        font-size: clamp(18px, 2.5vw, 24px);
       }
 
       button {
-        margin-left: auto;
+        margin: 0;
+        width: auto;
+        
+        @media (max-width: 600px) {
+          width: 100%;
+        }
       }
     }
 
     mat-card-content {
       mat-form-field {
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: clamp(12px, 2vw, 20px);
       }
 
-      .table-container {
-        position: relative;
-        min-height: 200px;
-        overflow: auto;
+      .mat-elevation-z8 {
         overflow-x: auto;
-
+        
         table {
           width: 100%;
+          min-width: 600px; // Minimum width to prevent squishing
 
           .mat-column-actions {
             width: 120px;
             text-align: right;
+            
+            @media (max-width: 960px) {
+              width: 100px;
+            }
           }
 
           .mat-column-rating {
@@ -50,6 +67,10 @@
               font-size: 12px;
               margin-top: 4px;
             }
+            
+            @media (max-width: 960px) {
+              width: 80px;
+            }
           }
 
           .mat-column-skills {
@@ -63,27 +84,76 @@
           }
 
           td.mat-cell {
-            padding: 16px 8px;
+            padding: clamp(8px, 1.5vw, 16px);
+            font-size: clamp(14px, 1.5vw, 16px);
+
+            // Gérer le texte long
+            &:not(.mat-column-actions) {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 200px;
+            }
 
             mat-chip-grid {
               display: inline-flex;
               flex-wrap: wrap;
               gap: 4px;
             }
+
+            button {
+              @media (max-width: 600px) {
+                padding: 0 8px;
+                min-width: 32px;
+                
+                mat-icon {
+                  font-size: 18px;
+                  width: 18px;
+                  height: 18px;
+                  line-height: 18px;
+                }
+              }
+            }
+          }
+
+          th.mat-header-cell {
+            padding: clamp(8px, 1.5vw, 16px);
+            font-size: clamp(14px, 1.5vw, 16px);
+            white-space: nowrap;
           }
         }
+      }
 
-        .loading-shade {
-          position: absolute;
-          top: 0;
-          left: 0;
-          bottom: 0;
-          right: 0;
-          background: rgba(0, 0, 0, 0.15);
-          z-index: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+      .loading-shade {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.15);
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+// Style pour les appareils mobiles
+@media (max-width: 600px) {
+  ::ng-deep {
+    .mat-mdc-paginator {
+      .mat-mdc-paginator-container {
+        justify-content: center;
+        padding: 0 8px;
+        
+        .mat-mdc-paginator-range-label {
+          margin: 0 8px;
+        }
+        
+        .mat-mdc-paginator-page-size {
+          margin-right: 8px;
         }
       }
     }

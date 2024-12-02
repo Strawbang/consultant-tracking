@@ -1,58 +1,130 @@
 .project-list-container {
-  padding: 20px;
+  padding: clamp(8px, 2vw, 20px);
+  width: 100%;
+  box-sizing: border-box;
 
   mat-card {
     mat-card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: clamp(12px, 2vw, 20px);
+      flex-wrap: wrap;
+      gap: 12px;
+
+      @media (max-width: 600px) {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      mat-card-title {
+        margin: 0;
+        font-size: clamp(18px, 2.5vw, 24px);
+      }
 
       button {
-        margin-left: auto;
+        margin: 0;
+        width: auto;
+        
+        @media (max-width: 600px) {
+          width: 100%;
+        }
       }
     }
 
     mat-form-field {
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: clamp(12px, 2vw, 20px);
     }
 
     .table-container {
       position: relative;
       min-height: 200px;
-      overflow: auto;
+      overflow-x: auto;
+      margin: 0 -16px;
+      padding: 0 16px;
+
+      @media (max-width: 600px) {
+        margin: 0 -8px;
+        padding: 0 8px;
+      }
 
       table {
         width: 100%;
+        min-width: 800px;
+
+        th.mat-header-cell,
+        td.mat-cell {
+          padding: clamp(8px, 1.5vw, 16px);
+          font-size: clamp(14px, 1.5vw, 16px);
+          
+          &:not(.mat-column-actions):not(.mat-column-status):not(.mat-column-consultants) {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+          }
+        }
 
         .mat-column-actions {
           width: 100px;
           text-align: center;
+
+          @media (max-width: 960px) {
+            width: 90px;
+          }
+
+          button {
+            @media (max-width: 600px) {
+              padding: 0 8px;
+              min-width: 32px;
+
+              mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                line-height: 18px;
+              }
+            }
+          }
         }
 
         .mat-column-status {
           width: 120px;
           
+          @media (max-width: 960px) {
+            width: 110px;
+          }
+          
           mat-chip {
             min-width: 80px;
             justify-content: center;
+            font-size: clamp(11px, 1.2vw, 12px);
+
+            @media (max-width: 600px) {
+              min-width: 70px;
+            }
           }
         }
 
         .mat-column-consultants {
           width: 100px;
           
+          @media (max-width: 960px) {
+            width: 90px;
+          }
+          
           .consultants-count {
             display: flex;
             align-items: center;
             gap: 4px;
+            font-size: clamp(14px, 1.5vw, 16px);
 
             mat-icon {
-              font-size: 20px;
-              width: 20px;
-              height: 20px;
-              line-height: 20px;
+              font-size: clamp(18px, 2vw, 20px);
+              width: clamp(18px, 2vw, 20px);
+              height: clamp(18px, 2vw, 20px);
+              line-height: clamp(18px, 2vw, 20px);
             }
           }
         }
@@ -69,6 +141,26 @@
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+    }
+  }
+}
+
+// Style pour les appareils mobiles
+@media (max-width: 600px) {
+  ::ng-deep {
+    .mat-mdc-paginator {
+      .mat-mdc-paginator-container {
+        justify-content: center;
+        padding: 0 8px;
+        
+        .mat-mdc-paginator-range-label {
+          margin: 0 8px;
+        }
+        
+        .mat-mdc-paginator-page-size {
+          margin-right: 8px;
+        }
       }
     }
   }

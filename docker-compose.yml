@@ -1,16 +1,35 @@
 services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8090:8080"  # Traefik dashboard
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - app-network
+
   backend:
     build:
       context: ./backend
-    ports:
-      - '8080:8080'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`${DOMAIN_BACKEND}`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/consultant_tracking
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin123
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
-      - SPRING_JPA_SHOW_SQL=true
-      - SPRING_JPA_FORMAT_SQL=true
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=${SPRING_JPA_HIBERNATE_DDL_AUTO}
+      - SPRING_JPA_SHOW_SQL=${SPRING_JPA_SHOW_SQL}
+      - SPRING_JPA_FORMAT_SQL=${SPRING_JPA_FORMAT_SQL}
     depends_on:
       mariadb:
         condition: service_healthy
@@ -24,22 +43,26 @@ services:
     networks:
       - app-network
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     target: development
-  #   ports:
-  #     - '4200:4200'
-  #   networks:
-  #     - app-network
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`${DOMAIN_FRONTEND}`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=4200"
+    ports:
+      - '4200:4200'
+    networks:
+      - app-network
 
   mariadb:
     image: mariadb:10.11
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: consultant_tracking
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin123
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - '3306:3306'
     volumes:
@@ -58,11 +81,11 @@ services:
       mariadb:
         condition: service_healthy
     environment:
-      - LIQUIBASE_COMMAND_USERNAME=admin
-      - LIQUIBASE_COMMAND_PASSWORD=admin123
-      - LIQUIBASE_COMMAND_URL=jdbc:mariadb://mariadb:3306/consultant_tracking
-      - LIQUIBASE_SEARCH_PATH=/liquibase/changelog
-      - LIQUIBASE_COMMAND_CHANGELOG_FILE=./db.changelog.xml
+      - LIQUIBASE_COMMAND_USERNAME=${LIQUIBASE_COMMAND_USERNAME}
+      - LIQUIBASE_COMMAND_PASSWORD=${LIQUIBASE_COMMAND_PASSWORD}
+      - LIQUIBASE_COMMAND_URL=${LIQUIBASE_COMMAND_URL}
+      - LIQUIBASE_SEARCH_PATH=${LIQUIBASE_SEARCH_PATH}
+      - LIQUIBASE_COMMAND_CHANGELOG_FILE=${LIQUIBASE_COMMAND_CHANGELOG_FILE}
     volumes:
       - ./liquibase:/liquibase/changelog
     command: update
@@ -71,8 +94,10 @@ services:
 
   adminer:
     image: adminer:latest
-    ports:
-      - '8081:8080'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.adminer.rule=Host(`${DOMAIN_ADMINER}`)"
+      - "traefik.http.services.adminer.loadbalancer.server.port=8080"
     depends_on:
       - mariadb
     networks:

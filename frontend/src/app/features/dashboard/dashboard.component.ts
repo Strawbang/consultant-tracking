@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Observable, forkJoin, Subject } from 'rxjs';
+import { map, takeUntil, shareReplay } from 'rxjs/operators';
 import { ConsultantService } from '@core/services/consultant.service';
 import { ProjectService } from '@core/services/project.service';
 import { EvaluationService } from '@core/services/evaluation.service';
@@ -9,6 +9,7 @@ import { Consultant } from '@core/models/consultant.model';
 import { Project, ProjectStatus } from '@core/models/project.model';
 import { Evaluation } from '@core/models/evaluation.model';
 import { Skill } from '@core/models/skill.model';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 interface DashboardStats {
   totalConsultants: number;
@@ -25,9 +26,10 @@ interface ChartData {
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   stats: DashboardStats = {
     totalConsultants: 0,
     activeProjects: 0,
@@ -70,20 +72,76 @@ export class DashboardComponent implements OnInit {
   evaluations$: Observable<Evaluation[]>;
   skills$: Observable<Skill[]>;
 
+  gridCols = 4;
+  rowHeight = '150px';
+
+  private destroy$ = new Subject<void>();
+  private defaultDimensions: [number, number] = [800, 400];
+
   constructor(
     private consultantService: ConsultantService,
     private projectService: ProjectService,
     private evaluationService: EvaluationService,
-    private skillService: SkillService
+    private skillService: SkillService,
+    private breakpointObserver: BreakpointObserver,
+    private cdr: ChangeDetectorRef
   ) {
-    this.consultants$ = this.consultantService.getConsultants();
-    this.projects$ = this.projectService.getProjects();
-    this.evaluations$ = this.evaluationService.getEvaluations();
-    this.skills$ = this.skillService.getSkills();
+    // Initialiser les observables avec shareReplay pour éviter les requêtes multiples
+    this.consultants$ = this.consultantService.getConsultants().pipe(
+      shareReplay(1)
+    );
+    this.projects$ = this.projectService.getProjects().pipe(
+      shareReplay(1)
+    );
+    this.evaluations$ = this.evaluationService.getEvaluations().pipe(
+      shareReplay(1)
+    );
+    this.skills$ = this.skillService.getSkills().pipe(
+      shareReplay(1)
+    );
+
+    // Observer les breakpoints une seule fois
+    this.breakpointObserver
+      .observe([
+        '(max-width: 576px)',
+        '(max-width: 768px)',
+        '(max-width: 992px)',
+        '(max-width: 1200px)'
+      ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        if (result.breakpoints['(max-width: 576px)']) {
+          this.gridCols = 1;
+          this.rowHeight = '120px';
+          this.defaultDimensions = [300, 250];
+        } else if (result.breakpoints['(max-width: 768px)']) {
+          this.gridCols = 2;
+          this.rowHeight = '130px';
+          this.defaultDimensions = [400, 300];
+        } else if (result.breakpoints['(max-width: 992px)']) {
+          this.gridCols = 2;
+          this.rowHeight = '140px';
+          this.defaultDimensions = [500, 350];
+        } else if (result.breakpoints['(max-width: 1200px)']) {
+          this.gridCols = 3;
+          this.rowHeight = '150px';
+          this.defaultDimensions = [600, 400];
+        } else {
+          this.gridCols = 4;
+          this.rowHeight = '150px';
+          this.defaultDimensions = [800, 400];
+        }
+        this.cdr.detectChanges();
+      });
   }
 
   ngOnInit(): void {
     this.loadDashboardData();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private loadDashboardData(): void {
@@ -93,32 +151,53 @@ export class DashboardComponent implements OnInit {
       projects: this.projects$,
       evaluations: this.evaluations$,
       skills: this.skills$
-    }).subscribe({
+    })
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
       next: (data) => {
-        this.totalConsultants = data.consultants.length;
-        this.totalProjects = data.projects.length;
-        this.totalEvaluations = data.evaluations.length;
-
-        this.projectStatusData = this.prepareProjectStatusData(data.projects);
-        this.consultantSkillsData = this.prepareConsultantSkillsData(data.consultants);
-        this.evaluationTrendsData = this.prepareEvaluationTrendsData(data.evaluations);
-
-        this.recentProjects = this.getRecentProjects(data.projects);
-        this.recentConsultants = this.prepareRecentConsultants(data.consultants);
-        this.recentEvaluations = this.getRecentEvaluations(data.evaluations);
-        this.topSkills = this.getTopSkills(data.skills);
-
-        this.averageRating = this.calculateAverageRating(data.consultants);
-
-        this.stats.skillCoverage = this.calculateSkillCoverage(this.recentConsultants, data.skills);
-
+        this.updateDashboardData(data);
         this.loading.stats = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error loading dashboard data:', error);
         this.loading.stats = false;
+        this.cdr.detectChanges();
       }
     });
+  }
+
+  private updateDashboardData(data: {
+    consultants: Consultant[],
+    projects: Project[],
+    evaluations: Evaluation[],
+    skills: Skill[]
+  }): void {
+    this.totalConsultants = data.consultants.length;
+    this.totalProjects = data.projects.length;
+    this.totalEvaluations = data.evaluations.length;
+    this.averageRating = this.calculateAverageRating(data.consultants);
+
+    // Préparer les données des graphiques en une seule passe
+    this.projectStatusData = this.prepareProjectStatusData(data.projects);
+    this.consultantSkillsData = this.prepareConsultantSkillsData(data.consultants);
+    this.evaluationTrendsData = this.prepareEvaluationTrendsData(data.evaluations);
+
+    // Mettre à jour les données récentes en une seule passe
+    this.updateRecentData(data);
+  }
+
+  private updateRecentData(data: {
+    consultants: Consultant[],
+    projects: Project[],
+    evaluations: Evaluation[],
+    skills: Skill[]
+  }): void {
+    this.recentProjects = this.getRecentProjects(data.projects);
+    this.recentConsultants = this.prepareRecentConsultants(data.consultants);
+    this.recentEvaluations = this.getRecentEvaluations(data.evaluations);
+    this.topSkills = this.getTopSkills(data.skills);
+    this.stats.skillCoverage = this.calculateSkillCoverage(this.recentConsultants, data.skills);
   }
 
   private prepareProjectStatusData(projects: Project[]): ChartData[] {
@@ -219,5 +298,9 @@ export class DashboardComponent implements OnInit {
     });
 
     return Math.round((coveredSkills.size / totalSkills) * 100);
+  }
+
+  getChartDimensions(): [number, number] {
+    return this.defaultDimensions;
   }
 }

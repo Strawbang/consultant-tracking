@@ -1,0 +1,168 @@
+// Styles pour les composants Material
+
+// Buttons
+.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-outlined-button {
+  &.mat-primary {
+    background-color: var(--primary-color);
+    color: white;
+
+    &:hover {
+      background-color: var(--primary-darker);
+    }
+  }
+
+  &.mat-accent {
+    background-color: var(--secondary-color);
+    color: white;
+
+    &:hover {
+      background-color: var(--secondary-darker);
+    }
+  }
+}
+
+// Cards
+.mat-mdc-card {
+  background-color: var(--surface-color);
+  box-shadow: var(--shadow-1);
+  border: 1px solid var(--border-color);
+
+  &:hover {
+    box-shadow: var(--shadow-2);
+  }
+
+  .mat-mdc-card-title {
+    color: var(--text-primary);
+  }
+
+  .mat-mdc-card-subtitle {
+    color: var(--text-secondary);
+  }
+}
+
+// Form Fields
+.mat-mdc-form-field {
+  .mat-mdc-form-field-label {
+    color: var(--text-secondary);
+  }
+
+  &.mat-focused {
+    .mat-mdc-form-field-label {
+      color: var(--primary-color);
+    }
+  }
+
+  .mat-mdc-form-field-underline {
+    background-color: var(--border-color);
+  }
+}
+
+// Tables
+.mat-mdc-table {
+  background-color: var(--surface-color);
+
+  .mat-mdc-header-row {
+    background-color: var(--background-color);
+  }
+
+  .mat-mdc-row {
+    &:hover {
+      background-color: var(--hover-color);
+    }
+  }
+
+  .mat-mdc-header-cell {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .mat-mdc-cell {
+    color: var(--text-secondary);
+  }
+}
+
+// Tabs
+.mat-mdc-tab-group {
+  .mat-mdc-tab-header {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .mat-mdc-tab {
+    color: var(--text-secondary);
+
+    &.mat-mdc-tab-active {
+      color: var(--primary-color);
+    }
+  }
+}
+
+// Toolbars
+.mat-mdc-toolbar {
+  background-color: var(--primary-color);
+  color: white;
+
+  &.mat-mdc-toolbar-secondary {
+    background-color: var(--secondary-color);
+  }
+}
+
+// Lists
+.mat-mdc-list {
+  .mat-mdc-list-item {
+    color: var(--text-primary);
+
+    &:hover {
+      background-color: var(--hover-color);
+    }
+  }
+}
+
+// Snackbars
+.mat-mdc-snack-bar-container {
+  &.success-snackbar {
+    background-color: var(--success-color);
+    color: white;
+  }
+
+  &.error-snackbar {
+    background-color: var(--error-color);
+    color: white;
+  }
+
+  &.warning-snackbar {
+    background-color: var(--warning-color);
+    color: white;
+  }
+
+  &.info-snackbar {
+    background-color: var(--info-color);
+    color: white;
+  }
+}
+
+// Progress Indicators
+.mat-mdc-progress-spinner, .mat-mdc-progress-bar {
+  &.mat-primary {
+    color: var(--primary-color);
+  }
+
+  &.mat-accent {
+    color: var(--secondary-color);
+  }
+}
+
+// Chips
+.mat-mdc-chip {
+  background-color: var(--hover-color);
+  color: var(--text-primary);
+
+  &.mat-primary {
+    background-color: var(--primary-lighter);
+    color: white;
+  }
+
+  &.mat-accent {
+    background-color: var(--secondary-lighter);
+    color: white;
+  }
+}

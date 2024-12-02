@@ -576,4 +576,188 @@
                        columnName="category" 
                        newDataType="ENUM('TECHNICAL', 'SOFT_SKILLS', 'MANAGEMENT', 'METHODOLOGY', 'TOOLS', 'LANGUAGES')"/>
     </changeSet>
+
+    <changeSet id="4" author="system">
+
+        <!-- Projects -->
+        <insert tableName="projects">
+            <column name="id" value="201"/>
+            <column name="name" value="Digital Banking Platform"/>
+            <column name="description" value="Développement d'une plateforme bancaire digitale"/>
+            <column name="start_date" value="2023-01-01"/>
+            <column name="end_date" value="2024-06-30"/>
+            <column name="client" value="BNP Paribas"/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="team_size" value="8"/>
+            <column name="location" value="Paris"/>
+            <column name="technologies" value="Java, Spring Boot, Angular, PostgreSQL"/>
+            <column name="methodology" value="Scrum"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="id" value="202"/>
+            <column name="name" value="Cloud Migration"/>
+            <column name="description" value="Migration des applications legacy vers AWS"/>
+            <column name="start_date" value="2023-03-15"/>
+            <column name="end_date" value="2024-03-14"/>
+            <column name="client" value="Société Générale"/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="team_size" value="6"/>
+            <column name="location" value="Paris"/>
+            <column name="technologies" value="AWS, Docker, Kubernetes, Terraform"/>
+            <column name="methodology" value="SAFe"/>
+        </insert>
+
+        <!-- Consultants -->
+        <insert tableName="consultants">
+            <column name="id" value="3"/>
+            <column name="first_name" value="Thomas"/>
+            <column name="last_name" value="Martin"/>
+            <column name="email" value="t.martin@email.com"/>
+            <column name="birth_date" value="1990-05-15"/>
+            <column name="hire_date" value="2020-01-15"/>
+            <column name="phone_number" value="+33612345678"/>
+            <column name="title" value="Senior Java Developer"/>
+            <column name="activity_rate" value="1.0"/>
+            <column name="career_goals" value="Evoluer vers un poste d'architecte technique"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="max_simultaneous_projects" value="2"/>
+            <column name="current_project_id" value="201"/>
+        </insert>
+        <insert tableName="consultants">
+            <column name="id" value="4"/>
+            <column name="first_name" value="Sophie"/>
+            <column name="last_name" value="Bernard"/>
+            <column name="email" value="s.bernard@email.com"/>
+            <column name="birth_date" value="1988-09-22"/>
+            <column name="hire_date" value="2019-03-01"/>
+            <column name="phone_number" value="+33623456789"/>
+            <column name="title" value="DevOps Engineer"/>
+            <column name="activity_rate" value="1.0"/>
+            <column name="career_goals" value="Se spécialiser en Cloud Architecture"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="max_simultaneous_projects" value="1"/>
+            <column name="current_project_id" value="202"/>
+        </insert>
+
+        <!-- Skills -->
+        <insert tableName="skills">
+            <column name="id" value="101"/>
+            <column name="name" value="Java"/>
+            <column name="description" value="Java SE 11+ Development"/>
+            <column name="category" value="TECHNICAL"/>
+            <column name="level" value="5"/>
+        </insert>
+        <insert tableName="skills">
+            <column name="id" value="102"/>
+            <column name="name" value="Spring Boot"/>
+            <column name="description" value="Spring Boot Framework Development"/>
+            <column name="category" value="TECHNICAL"/>
+            <column name="level" value="4"/>
+        </insert>
+        <insert tableName="skills">
+            <column name="id" value="103"/>
+            <column name="name" value="Angular"/>
+            <column name="description" value="Angular 12+ Development"/>
+            <column name="category" value="TECHNICAL"/>
+            <column name="level" value="4"/>
+        </insert>
+        <insert tableName="skills">
+            <column name="id" value="104"/>
+            <column name="name" value="Leadership"/>
+            <column name="description" value="Team Leadership and Management"/>
+            <column name="category" value="SOFT_SKILLS"/>
+            <column name="level" value="4"/>
+        </insert>
+        <insert tableName="skills">
+            <column name="id" value="105"/>
+            <column name="name" value="Agile"/>
+            <column name="description" value="Agile Methodologies"/>
+            <column name="category" value="METHODOLOGY"/>
+            <column name="level" value="4"/>
+        </insert>
+
+        <!-- Consultant Skills -->
+        <insert tableName="consultant_skills">
+            <column name="consultant_id" value="3"/>
+            <column name="skill_id" value="101"/>
+            <column name="skill_level" value="5"/>
+        </insert>
+        <insert tableName="consultant_skills">
+            <column name="consultant_id" value="3"/>
+            <column name="skill_id" value="102"/>
+            <column name="skill_level" value="4"/>
+        </insert>
+        <insert tableName="consultant_skills">
+            <column name="consultant_id" value="4"/>
+            <column name="skill_id" value="103"/>
+            <column name="skill_level" value="4"/>
+        </insert>
+        <insert tableName="consultant_skills">
+            <column name="consultant_id" value="4"/>
+            <column name="skill_id" value="104"/>
+            <column name="skill_level" value="3"/>
+        </insert>
+
+        <!-- Missions -->
+        <insert tableName="missions">
+            <column name="id" value="301"/>
+            <column name="title" value="Lead Developer - Digital Banking Platform"/>
+            <column name="description" value="Technical leadership, code review, architecture for the Digital Banking Platform"/>
+            <column name="start_date" value="2023-01-01"/>
+            <column name="end_date" value="2024-06-30"/>
+            <column name="consultant_id" value="3"/>
+            <column name="client" value="BNP Paribas"/>
+            <column name="location" value="Paris"/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="role" value="Lead Developer"/>
+            <column name="responsibilities" value="Architecture technique, code review, mentoring"/>
+            <column name="allocation_percentage" value="100.0"/>
+            <column name="deliverables" value="Architecture document, Code quality guidelines"/>
+            <column name="feedback" value="Excellent progrès sur l'architecture"/>
+        </insert>
+        <insert tableName="missions">
+            <column name="id" value="302"/>
+            <column name="title" value="DevOps Engineer - Cloud Migration"/>
+            <column name="description" value="Cloud infrastructure, CI/CD, monitoring for the Cloud Migration project"/>
+            <column name="start_date" value="2023-03-15"/>
+            <column name="end_date" value="2024-03-14"/>
+            <column name="consultant_id" value="4"/>
+            <column name="client" value="Société Générale"/>
+            <column name="location" value="Paris"/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="role" value="DevOps Engineer"/>
+            <column name="responsibilities" value="Infrastructure Cloud, Pipeline CI/CD, Monitoring"/>
+            <column name="allocation_percentage" value="100.0"/>
+            <column name="deliverables" value="Infrastructure as Code, Documentation de déploiement"/>
+            <column name="feedback" value="Très bonne mise en place de l'infrastructure"/>
+        </insert>
+
+        <!-- Evaluations -->
+        <insert tableName="evaluations">
+            <column name="id" value="401"/>
+            <column name="consultant_id" value="3"/>
+            <column name="evaluation_date" value="2023-12-15"/>
+            <column name="evaluator" value="Pierre Durand"/>
+            <column name="score" value="4.5"/>
+            <column name="comments" value="Excellent leadership technique et forte contribution au projet. A démontré une grande capacité à résoudre des problèmes complexes."/>
+            <column name="status" value="COMPLETED"/>
+            <column name="completion_date" value="2023-12-15"/>
+            <column name="type" value="PROJECT"/>
+            <column name="project_id" value="201"/>
+            <column name="version" value="1"/>
+        </insert>
+        <insert tableName="evaluations">
+            <column name="id" value="402"/>
+            <column name="consultant_id" value="4"/>
+            <column name="evaluation_date" value="2023-12-20"/>
+            <column name="evaluator" value="Marie Lambert"/>
+            <column name="score" value="4.2"/>
+            <column name="comments" value="Très bonne maîtrise technique des outils DevOps et excellente communication avec l'équipe."/>
+            <column name="status" value="COMPLETED"/>
+            <column name="completion_date" value="2023-12-20"/>
+            <column name="type" value="PROJECT"/>
+            <column name="project_id" value="202"/>
+            <column name="version" value="1"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

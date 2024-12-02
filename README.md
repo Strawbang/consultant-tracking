@@ -1,163 +1,101 @@
-# Consultant Tracking Application
+# Consultant Tracking
 
-Application de suivi et de gestion des compétences des consultants développée avec Angular 18 et Spring Boot.
+*[English](README.md) ∙ [Français](docs/fr/README.md)*
 
-## 🚀 Fonctionnalités
+## 📝 About
 
-- Gestion des compétences
-  - Liste des compétences avec filtrage avancé
-  - Catégorisation des compétences (Technique, Soft Skills, Projet, Management)
-  - Niveaux de compétence (1-5)
-  - Vue arborescente des compétences
+A web application for tracking and managing consultants, their assignments, and billing.
 
-- Évaluations
-  - Suivi des évaluations des consultants
-  - Historique des évaluations
-  - Filtrage par type et date
+## 🚀 Features
+
+- Consultant management
+- Assignment tracking
+- Billing management
+- Analytics dashboard
+- Responsive interface
 
 ## 🛠️ Technologies
 
-### Frontend
-- Angular 18
-- Angular Material
-- RxJS
-- SCSS
-- TypeScript
+- **Frontend**: Angular with Angular Material
+- **Backend**: Spring Boot
+- **Database**: MariaDB
+- **Containerization**: Docker
+- **CI/CD**: GitHub Actions
 
-### Backend
-- Spring Boot
-- Spring Security
-- Spring Data JPA
-- MariaDB
-- Liquibase
+## 🏗️ Installation
 
-## 📋 Prérequis
-
-- Node.js (v18+)
-- npm ou yarn
-- Java 17+
-- MariaDB
-
-## 🔧 Installation
-
-### Base de données
+1. Clone the repository:
 ```bash
-# Créer la base de données
-mysql -u root -p
-CREATE DATABASE consultant_tracking;
-
-# Les migrations Liquibase s'exécuteront automatiquement au démarrage de l'application
+git clone https://github.com/your-username/consultant-tracking.git
+cd consultant-tracking
 ```
 
+2. Copy the environment file:
+```bash
+cp .env.example .env
+```
+
+3. Modify the environment variables in `.env` according to your needs.
+
+4. Launch the application with Docker Compose:
+```bash
+docker-compose up -d
+```
+
+The application will be accessible at:
+- Frontend: http://app.localhost
+- Backend API: http://api.localhost
+- Adminer (DB management): http://adminer.localhost
+
+## 🧪 Testing
+
 ### Backend
 ```bash
-# Se placer dans le dossier backend
 cd backend
-
-# Compiler le projet
-./mvnw clean install
-
-# Lancer l'application
-./mvnw spring-boot:run
-```
-
-### Frontend
-```bash
-# Se placer dans le dossier frontend
-cd frontend
-
-# Installer les dépendances
-npm install
-
-# Lancer l'application en mode développement
-npm start
-```
-
-L'application sera accessible à l'adresse : `http://localhost:4200`
-
-## 📁 Structure du Projet
-
-```
-consultant-tracking/
-├── frontend/                # Application Angular
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── core/       # Services, modèles, guards
-│   │   │   ├── features/   # Modules fonctionnels
-│   │   │   └── shared/     # Composants partagés
-│   │   ├── assets/         # Images, fonts, etc.
-│   │   └── styles/         # Styles globaux
-│   └── package.json
-├── backend/                 # Application Spring Boot
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/      # Code source Java
-│   │   │   └── resources/ # Configuration
-│   │   └── test/          # Tests
-│   └── pom.xml
-└── liquibase/              # Scripts de migration DB
-```
-
-## 🔐 Configuration
-
-### Backend
-Configurer les propriétés dans `backend/src/main/resources/application.properties` :
-```properties
-spring.datasource.url=jdbc:mariadb://localhost:3306/consultant_tracking
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-```
-
-### Frontend
-Les variables d'environnement sont dans `frontend/src/environments/` :
-- `environment.ts` pour le développement
-- `environment.prod.ts` pour la production
-
-## 🧪 Tests
-
-### Backend
-```bash
 ./mvnw test
 ```
 
 ### Frontend
 ```bash
+cd frontend
 npm test
 ```
 
-## 📦 Déploiement
+## 📖 Documentation
 
-### Production Build
-```bash
-# Backend
-./mvnw clean package
+Detailed documentation is available in:
+- [English](docs/en/README.md)
+- [Français](docs/fr/README.md)
 
-# Frontend
-npm run build
-```
+## 🤝 Contributing
 
-Les fichiers de production seront générés dans :
-- Backend : `target/consultant-tracking.jar`
-- Frontend : `dist/consultant-tracking/`
+Contributions are welcome! Please read our [contribution guidelines](docs/en/CONTRIBUTING.md) before getting started.
 
-## 🤝 Contribution
+## 📜 Code of Conduct
 
-1. Fork le projet
-2. Créer une branche (`git checkout -b feature/amazing-feature`)
-3. Commit les changements (`git commit -m 'Add amazing feature'`)
-4. Push la branche (`git push origin feature/amazing-feature`)
-5. Ouvrir une Pull Request
+We are committed to maintaining a welcoming and respectful environment for everyone. Please read our [Code of Conduct](docs/en/CODE_OF_CONDUCT.md) before contributing to the project.
 
 ## 📝 License
 
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). This means that:
 
-## 👥 Auteurs
+- You can use this software for any purpose
+- You can modify this software
+- You can distribute this software
+- You must include the license and copyright notice with each and every distribution
+- You must include the complete source code of modifications
+- You must state significant changes made to the software
+- You must make available the complete source code to any network user
+- This software comes with no warranties
 
-- Strawbang - *Développement initial*
+For the full license text, see the [LICENSE](LICENSE) file or visit [GNU AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html)
 
-## 🙏 Remerciements
+## 👥 Authors
 
-- Angular Material pour les composants UI
-- Spring Boot pour le framework backend
-- La communauté open source
+- Strawbang - *Initial development*
+
+## 🙏 Acknowledgments
+
+- Angular Material for UI components
+- Spring Boot for backend framework
+- The open source community

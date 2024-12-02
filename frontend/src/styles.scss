@@ -1,20 +1,130 @@
-/* You can add global styles to this file, and also import other style files */
-@use '@angular/material' as mat;
+/* Importation des styles Material */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-// Include the prebuilt theme
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
+/* Importation de nos fichiers de styles personnalisés */
+@import 'styles/theme';
+@import 'styles/material-components';
+@import 'styles/global';
 
-/* Global styles */
-html, body { 
-  height: 100%; 
-  margin: 0;
-  background-color: #fafafa;
+/* Appliquer le thème Material à l'application */
+.mat-app-background {
+  @extend .mat-theme;
 }
 
-body { 
+/* Styles globaux */
+html, body {
+  height: 100%;
+  margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  color: rgba(0, 0, 0, 0.87);
-  line-height: 1.5;
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+}
+
+/* Classes d'utilité pour les couleurs */
+.bg-primary { background-color: var(--primary-color) !important; }
+.bg-accent { background-color: var(--accent-color) !important; }
+.bg-warn { background-color: var(--warn-color) !important; }
+.bg-success { background-color: var(--success-color) !important; }
+.bg-info { background-color: var(--info-color) !important; }
+.bg-warning { background-color: var(--warning-color) !important; }
+.bg-error { background-color: var(--error-color) !important; }
+
+.text-primary { color: var(--primary-color) !important; }
+.text-accent { color: var(--accent-color) !important; }
+.text-warn { color: var(--warn-color) !important; }
+.text-success { color: var(--success-color) !important; }
+.text-info { color: var(--info-color) !important; }
+.text-warning { color: var(--warning-color) !important; }
+.text-error { color: var(--error-color) !important; }
+
+/* Classes d'espacement */
+.m-1 { margin: 0.25rem !important; }
+.m-2 { margin: 0.5rem !important; }
+.m-3 { margin: 1rem !important; }
+.m-4 { margin: 1.5rem !important; }
+.m-5 { margin: 3rem !important; }
+
+.p-1 { padding: 0.25rem !important; }
+.p-2 { padding: 0.5rem !important; }
+.p-3 { padding: 1rem !important; }
+.p-4 { padding: 1.5rem !important; }
+.p-5 { padding: 3rem !important; }
+
+/* Classes de mise en page */
+.d-flex { display: flex !important; }
+.flex-column { flex-direction: column !important; }
+.justify-content-between { justify-content: space-between !important; }
+.align-items-center { align-items: center !important; }
+.flex-grow-1 { flex-grow: 1 !important; }
+
+/* Styles des cartes Material */
+.mat-mdc-card {
+  background-color: var(--card-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: var(--shadow-2);
+  }
+}
+
+/* Styles des tableaux Material */
+.mat-mdc-table {
+  background-color: var(--card-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+
+  .mat-mdc-header-cell {
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .mat-mdc-row {
+    &:hover {
+      background-color: var(--primary-lighter);
+    }
+  }
+}
+
+/* Styles des boutons Material */
+.mat-mdc-raised-button {
+  &.mat-primary {
+    background-color: var(--primary-color);
+  }
+  &.mat-accent {
+    background-color: var(--accent-color);
+  }
+  &.mat-warn {
+    background-color: var(--warn-color);
+  }
+}
+
+/* Styles des chips Material */
+.mat-mdc-chip {
+  &.mat-primary {
+    background-color: var(--primary-lighter);
+    color: var(--primary-darker);
+  }
+  &.mat-accent {
+    background-color: var(--accent-lighter);
+    color: var(--accent-darker);
+  }
+  &.mat-warn {
+    background-color: var(--warn-color);
+    color: white;
+  }
+}
+
+/* Animation de chargement */
+.loading-shade {
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Layout styles */
@@ -25,55 +135,36 @@ body {
   box-sizing: border-box;
 }
 
-/* Card styles */
-.mat-mdc-card {
-  margin-bottom: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.1) !important;
-  transition: box-shadow 0.3s ease-in-out;
-
-  &:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,.15) !important;
-  }
-}
-
-/* Table styles */
-.mat-mdc-table {
-  width: 100%;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,.1);
-}
-
-.mat-mdc-row:hover {
-  background: #f5f5f5;
-}
-
-/* Form styles */
-.form-field-full-width {
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.form-row {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-/* Button styles */
-.mat-mdc-raised-button {
-  margin-right: 8px;
-  margin-bottom: 8px;
-}
-
 /* Responsive grid */
 .grid {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin: 16px 0;
+}
+
+@media (max-width: 599px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Utils */
+.text-center { text-align: center; }
+.mt-2 { margin-top: 16px; }
+.mb-2 { margin-bottom: 16px; }
+.p-2 { padding: 16px; }
+
+/* Status indicators */
+.status-chip {
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  
+  &.active { background-color: #e8f5e9; color: #2e7d32; }
+  &.pending { background-color: #fff3e0; color: #ef6c00; }
+  &.completed { background-color: #e3f2fd; color: #1565c0; }
 }
 
 /* Navigation */
@@ -104,36 +195,4 @@ mat-sidenav-content {
   mat-sidenav {
     width: 200px;
   }
-}
-
-/* Loading and progress indicators */
-.loading-shade {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Utils */
-.text-center { text-align: center; }
-.mt-2 { margin-top: 16px; }
-.mb-2 { margin-bottom: 16px; }
-.p-2 { padding: 16px; }
-
-/* Status indicators */
-.status-chip {
-  border-radius: 16px;
-  padding: 4px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  
-  &.active { background-color: #e8f5e9; color: #2e7d32; }
-  &.pending { background-color: #fff3e0; color: #ef6c00; }
-  &.completed { background-color: #e3f2fd; color: #1565c0; }
 }

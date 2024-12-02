@@ -1,6 +1,6 @@
 <div class="dashboard-container">
   <!-- Metrics Cards -->
-  <mat-grid-list cols="4" rowHeight="100px" gutterSize="16">
+  <mat-grid-list [cols]="gridCols" [rowHeight]="rowHeight" gutterSize="16">
     <mat-grid-tile>
       <mat-card class="metric-card">
         <mat-card-content>
@@ -49,7 +49,8 @@
           [results]="projectStatusData"
           [gradient]="true"
           [legend]="true"
-          [labels]="true">
+          [labels]="true"
+          [view]="getChartDimensions()">
         </ngx-charts-pie-chart>
       </mat-card-content>
     </mat-card>
@@ -67,7 +68,8 @@
           [showXAxisLabel]="true"
           [showYAxisLabel]="true"
           xAxisLabel="Skills"
-          yAxisLabel="Count">
+          yAxisLabel="Count"
+          [view]="getChartDimensions()">
         </ngx-charts-bar-vertical>
       </mat-card-content>
     </mat-card>
@@ -85,7 +87,8 @@
           [showXAxisLabel]="true"
           [showYAxisLabel]="true"
           xAxisLabel="Month"
-          yAxisLabel="Average Rating">
+          yAxisLabel="Average Rating"
+          [view]="getChartDimensions()">
         </ngx-charts-line-chart>
       </mat-card-content>
     </mat-card>
