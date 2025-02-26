@@ -1,0 +1,75 @@
+name: Quality Checks
+
+on:
+  workflow_call:  # This allows the workflow to be called by other workflows
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # - name: Check branch name
+      #   run: |
+      #     BRANCH_NAME=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+      #     if ! echo "$BRANCH_NAME" | grep -E "^(feature|bugfix|hotfix|release|chore)/" > /dev/null; then
+      #       echo "Branch name '$BRANCH_NAME' does not follow convention"
+      #       echo "Branch names should start with: feature/, bugfix/, hotfix/, release/, or chore/"
+      #       exit 1
+      #     fi
+
+      - name: Check Conventional Commits
+        uses: webiny/action-conventional-commits@v1.1.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Frontend Checks
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Run Frontend Tests
+        working-directory: frontend
+        run: npm test
+
+      - name: Check Frontend Types
+        working-directory: frontend
+        run: npm run type-check
+
+      # Backend Checks
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Run Checkstyle
+        working-directory: backend
+        run: mvn checkstyle:check
+
+      - name: Run PMD
+        working-directory: backend
+        run: mvn pmd:check
+
+      - name: Run SpotBugs
+        working-directory: backend
+        run: mvn spotbugs:check
+
+      - name: Run Backend Tests
+        working-directory: backend
+        run: mvn test

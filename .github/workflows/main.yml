@@ -1,0 +1,38 @@
+name: Main CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  BACKEND_IMAGE_NAME: ${{ github.repository }}/backend
+  FRONTEND_IMAGE_NAME: ${{ github.repository }}/frontend
+  MYSQL_DATABASE: consultant_tracking
+  DOMAIN_FRONTEND: app.example.com
+  DOMAIN_BACKEND: api.example.com
+  DOMAIN_ADMINER: adminer.example.com
+
+jobs:
+  quality:
+    uses: ./.github/workflows/quality-checks.yml
+    secrets: inherit
+
+  sonar:
+    needs: quality
+    uses: ./.github/workflows/sonarqube.yml
+    secrets: inherit
+
+  ai-review:
+    needs: quality
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/ai-review.yml
+    secrets: inherit
+
+  build-and-deploy:
+    needs: [sonar, ai-review]
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/build-deploy.yml
+    secrets: inherit

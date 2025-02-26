@@ -1,0 +1,51 @@
+name: AI Code Review
+
+on:
+  workflow_call:  # This allows the workflow to be called by other workflows
+
+jobs:
+  ai-code-review:
+    name: AI Code Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: AI Code Review
+        uses: coderabbitai/ai-pr-reviewer@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          OPENAI_API_BASE: "https://api.mistral.ai/v1"
+        with:
+          model: mistral-large
+          debug: true
+          max_files: 20
+          review_simple_changes: true
+          review_comment_lgtm: true
+          path_filters: |
+            !**/*.lock
+            !**/*.md
+            !.gitignore
+          system_message: |
+            You are a senior software engineer reviewing code changes.
+            Focus on:
+            1. Code correctness and potential bugs
+            2. Performance implications
+            3. Security vulnerabilities
+            4. Best practices and patterns
+            5. Maintainability and readability
+            
+            Provide specific, actionable feedback.
+            Be concise but thorough.
+            Suggest improvements when relevant.
+
+      - name: Run Reviewdog for additional static analysis
+        uses: reviewdog/action-suggester@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tool_name: reviewdog
+          level: warning
